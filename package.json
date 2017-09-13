@@ -1,0 +1,36 @@
+{
+  "name": "sails-slug",
+  "version": "0.0.1",
+  "description": "",
+  "main": "libs/index.js",
+  "scripts": {
+     "test": "mocha test/bootstrap.test.js test/unit/*.test.js test/unit/**/*.test.js --compilers js:babel-core/register"
+  },
+  "keywords": [
+  ],
+  "author": {
+    "name": "fauzan",
+    "email": "fauzan@mantolitoli.sch.id"
+  },
+  "license": "ISC",
+  "sails": {
+    "isHook": true
+  },
+  "devDependencies": {
+    "babel-cli": "^6.2.0",
+    "babel-core": "^6.2.1",
+    "babel-preset-es2015": "^6.1.18",
+    "mocha": "^3.1.2",
+    "sails": "^0.12.7",
+    "sails-disk": "^0.10.10",
+    "should": "^11.1.1"
+  },
+  "dependencies": {
+    "lodash": "^4.16.4",
+    "node-gyp": "^3.4.0",
+    "rebuild": "^0.1.2",
+    "require-all": "^2.0.0",
+    "slug": "^0.9.1",
+    "node-uuid": "^1.4.7"
+  }
+}
