@@ -1,13 +1,12 @@
 {
   "name": "sails-slug",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "libs/index.js",
   "scripts": {
-     "test": "mocha test/bootstrap.test.js test/unit/*.test.js test/unit/**/*.test.js --compilers js:babel-core/register"
+    "test": "mocha test/bootstrap.test.js test/unit/*.test.js test/unit/**/*.test.js --compilers js:babel-core/register"
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "author": {
     "name": "fauzan",
     "email": "fauzan@mantolitoli.sch.id"
