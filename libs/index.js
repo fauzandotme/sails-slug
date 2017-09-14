@@ -103,7 +103,7 @@ function SlugsHook(sails) {
                         if (num >= slugNo) {
                           suffix = true;
                           slugNo = num + 1;
-                          console.log(slugNo);
+                          // console.log(slugNo);
                           values[name] = slugName +separator+ slugNo;
                         }
 
@@ -141,6 +141,7 @@ function SlugsHook(sails) {
           })(model.beforeCreate, attr);
           model.beforeUpdate = (function (previousBeforeCreate, attrs) {
             return function (values, cb) {
+              if(!values[from]) return cb();
               var tableName = model.tableName;
               eval(values.asluggable);
               var from = (attrs.from) ? attrs.from : 'title',
@@ -188,7 +189,7 @@ function SlugsHook(sails) {
                         if (num >= slugNo) {
                           suffix = true;
                           slugNo = num + 1;
-                          console.log(slugNo);
+                          // console.log(slugNo);
                           values[name] = slugName +separator+ slugNo;
                         }
 
