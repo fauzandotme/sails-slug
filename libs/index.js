@@ -92,7 +92,36 @@ function SlugsHook(sails) {
                 if (found && found.length > 0) {
                   var slugNo = 1;
                   var suffix = false;
-                  for (var i = 0; i < found.length; i++) {
+                  found.map((el) => {
+                    var str = el[name];
+                    var regx = "^"+slugName+"-[0-9]*$";
+                    var patt = new RegExp(regx);
+                    if(patt.test(str)) {
+                      var res = str.replace(slugName+"-", "");
+                      if (!isNaN(res)) {
+                        var num = parseInt(res);
+                        el.num = num;
+                        return el;
+                      }
+                    }
+                  })
+                  try {
+                    for (var i = 1; i < found.length + 1; i++) {
+                      let index = found.findIndex(el => el.num == i)
+                      if(index < 0) {
+                        throw i;
+                      }
+                    }
+                    suffix = true;
+                    slugNo = i;
+                    values[name] = slugName +separator+ slugNo;
+                  } catch (e) {
+                    suffix = true;
+                    slugNo = e;
+                    values[name] = slugName +separator+ slugNo;
+                  }
+
+                  // for (var i = 0; i < found.length; i++) {
                     var str = found[i][name];
                     var regx = "^"+slugName+"-[0-9]*$";
                     var patt = new RegExp(regx);
@@ -141,7 +170,6 @@ function SlugsHook(sails) {
           })(model.beforeCreate, attr);
           model.beforeUpdate = (function (previousBeforeCreate, attrs) {
             return function (values, cb) {
-              if(!values[from]) return cb();
               var tableName = model.tableName;
               eval(values.asluggable);
               var from = (attrs.from) ? attrs.from : 'title',
@@ -151,6 +179,7 @@ function SlugsHook(sails) {
               remove = (attrs.remove) ? attrs.remove : null,
               lower = (attrs.lower) ? attrs.lower : true,
               separator = (attrs.separator) ? attrs.separator : "-";
+              if(!values[from]) return cb();
 
               var slugName = "";
               if (multifield) {
@@ -178,35 +207,63 @@ function SlugsHook(sails) {
                 if (found && found.length > 0) {
                   var slugNo = 1;
                   var suffix = false;
-                  for (var i = 0; i < found.length; i++) {
-                    var str = found[i][name];
+                  found.map((el) => {
+                    var str = el[name];
                     var regx = "^"+slugName+"-[0-9]*$";
                     var patt = new RegExp(regx);
                     if(patt.test(str)) {
                       var res = str.replace(slugName+"-", "");
                       if (!isNaN(res)) {
                         var num = parseInt(res);
-                        if (num >= slugNo) {
-                          suffix = true;
-                          slugNo = num + 1;
-                          // console.log(slugNo);
-                          values[name] = slugName +separator+ slugNo;
-                        }
-
+                        el.num = num;
+                        return el;
                       }
                     }
-                    else {
-                      if (!suffix) {
-                        suffix = true;
-                        values[name] = slugName;
-                        if (str == slugName) {
-                          suffix = true;
-                          values[name] = slugName +separator+ slugNo;
-                        }
+                  })
+                  try {
+                    for (var i = 1; i < found.length + 1; i++) {
+                      let index = found.findIndex(el => el.num == i)
+                      if(index < 0) {
+                        throw i;
                       }
                     }
-
+                    suffix = true;
+                    slugNo = i;
+                    values[name] = slugName +separator+ slugNo;
+                  } catch (e) {
+                    suffix = true;
+                    slugNo = e;
+                    values[name] = slugName +separator+ slugNo;
                   }
+                  // for (var i = 0; i < found.length; i++) {
+                  //   var str = found[i][name];
+                  //   var regx = "^"+slugName+"-[0-9]*$";
+                  //   var patt = new RegExp(regx);
+                  //   if(patt.test(str)) {
+                  //     var res = str.replace(slugName+"-", "");
+                  //     if (!isNaN(res)) {
+                  //       var num = parseInt(res);
+                  //       if (num >= slugNo) {
+                  //         suffix = true;
+                  //         slugNo = num + 1;
+                  //         // console.log(slugNo);
+                  //         values[name] = slugName +separator+ slugNo;
+                  //       }
+                  //
+                  //     }
+                  //   }
+                  //   else {
+                  //     if (!suffix) {
+                  //       suffix = true;
+                  //       values[name] = slugName;
+                  //       if (str == slugName) {
+                  //         suffix = true;
+                  //         values[name] = slugName +separator+ slugNo;
+                  //       }
+                  //     }
+                  //   }
+                  //
+                  // }
 
                   if (!suffix) {
                     values[name] = slugName +separator+ uuid.v4();
