@@ -65,6 +65,7 @@ function SlugsHook(sails) {
               remove = (attrs.remove) ? attrs.remove : null,
               lower = (attrs.lower) ? attrs.lower : true,
               separator = (attrs.separator) ? attrs.separator : "-";
+              if(!values[from]) return cb();
 
               var slugName = "";
               if (multifield) {
@@ -120,36 +121,35 @@ function SlugsHook(sails) {
                     slugNo = e;
                     values[name] = slugName +separator+ slugNo;
                   }
-
                   // for (var i = 0; i < found.length; i++) {
-                    var str = found[i][name];
-                    var regx = "^"+slugName+"-[0-9]*$";
-                    var patt = new RegExp(regx);
-                    if(patt.test(str)) {
-                      var res = str.replace(slugName+"-", "");
-                      if (!isNaN(res)) {
-                        var num = parseInt(res);
-                        if (num >= slugNo) {
-                          suffix = true;
-                          slugNo = num + 1;
-                          // console.log(slugNo);
-                          values[name] = slugName +separator+ slugNo;
-                        }
-
-                      }
-                    }
-                    else {
-                      if (!suffix) {
-                        suffix = true;
-                        values[name] = slugName;
-                        if (str == slugName) {
-                          suffix = true;
-                          values[name] = slugName +separator+ slugNo;
-                        }
-                      }
-                    }
-
-                  }
+                  //   var str = found[i][name];
+                  //   var regx = "^"+slugName+"-[0-9]*$";
+                  //   var patt = new RegExp(regx);
+                  //   if(patt.test(str)) {
+                  //     var res = str.replace(slugName+"-", "");
+                  //     if (!isNaN(res)) {
+                  //       var num = parseInt(res);
+                  //       if (num >= slugNo) {
+                  //         suffix = true;
+                  //         slugNo = num + 1;
+                  //         // console.log(slugNo);
+                  //         values[name] = slugName +separator+ slugNo;
+                  //       }
+                  //
+                  //     }
+                  //   }
+                  //   else {
+                  //     if (!suffix) {
+                  //       suffix = true;
+                  //       values[name] = slugName;
+                  //       if (str == slugName) {
+                  //         suffix = true;
+                  //         values[name] = slugName +separator+ slugNo;
+                  //       }
+                  //     }
+                  //   }
+                  //
+                  // }
 
                   if (!suffix) {
                     values[name] = slugName +separator+ uuid.v4();
