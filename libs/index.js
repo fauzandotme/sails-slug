@@ -201,6 +201,7 @@ function SlugsHook(sails) {
               var criteria = {};
               criteria[name] = { 'like': slugName+'%' };
               criteria['select'] = [name];
+              if(values.id) criteria.id = {'!' : values.id};
 
               // Check that slug is not already used
               sails.models[modelName].find(criteria).then(function (found) {
@@ -235,6 +236,7 @@ function SlugsHook(sails) {
                     slugNo = e;
                     values[name] = slugName +separator+ slugNo;
                   }
+
                   // for (var i = 0; i < found.length; i++) {
                   //   var str = found[i][name];
                   //   var regx = "^"+slugName+"-[0-9]*$";
